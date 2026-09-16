@@ -1,0 +1,8 @@
+:root{color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;color:#f3e6cf;background:radial-gradient(ellipse at 50% 42%,#35151c 0%,#100e0d 67%);font-family:Segoe UI,Arial,sans-serif}
+.originaltext-page{min-height:calc(100svh - 65px);display:grid;place-items:center;padding:30px 18px calc(50px + env(safe-area-inset-bottom))}
+.originaltext-panel{width:min(100%,760px);padding:clamp(26px,7vw,60px);border:1px solid rgba(227,196,139,.4);border-radius:16px;background:linear-gradient(135deg,#211c1a,#381923);box-shadow:0 22px 50px rgba(0,0,0,.27)}
+.eyebrow{font-family:Georgia,serif;color:#e3c48b;text-transform:uppercase;letter-spacing:.13em;font-size:.84rem;line-height:1.4;margin:0 0 18px}
+h1{font-family:Georgia,serif;color:#e3c48b;font-size:clamp(2.25rem,7vw,4.2rem);margin:0 0 20px}
+.originaltext-panel p:last-child{font-size:1.1rem;line-height:1.6;margin:0}

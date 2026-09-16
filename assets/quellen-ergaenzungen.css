@@ -1,0 +1,11 @@
+.film-grid{align-items:stretch}
+.film-figure{margin:14px 0 4px}
+.film-figure img{display:block;width:100%;max-height:340px;object-fit:contain;object-position:center;background:#191412;border-radius:8px}
+.film-figure figcaption{margin-top:7px;color:#554e43;font-size:.9rem;line-height:1.35}
+.source-card .use{margin-top:0;color:#29251f}
+.source-card .use strong{color:#6c2030}
+.trailer-frame{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:8px;background:#1a1714;margin:14px 0 4px}
+.trailer-frame a,.trailer-frame img{display:block;width:100%;height:100%}
+.trailer-frame img{object-fit:cover}
+.trailer-frame a:focus-visible{outline:3px solid #f0d393;outline-offset:-4px}
+@media(max-width:760px){.film-figure figcaption{font-size:1rem}}
