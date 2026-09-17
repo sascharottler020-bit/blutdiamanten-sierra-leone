@@ -13,7 +13,7 @@
   let touchStart = null;
 
   function slideUrl(number) {
-    return "assets/slides/folie-" + String(number).padStart(2, "0") + ".webp";
+    return "assets/slides/folie-" + String(number).padStart(2, "0") + "-b7eeff66.webp";
   }
 
   function preload(number) {
@@ -31,7 +31,7 @@
     video.hidden = !filmSlide;
     if (filmSlide) {
       if (!video.src) {
-        video.src = "assets/slides/folie-02-video.mp4";
+        video.src = "assets/slides/folie-02-video-b7eeff66.mp4";
         video.load();
       }
     } else {
