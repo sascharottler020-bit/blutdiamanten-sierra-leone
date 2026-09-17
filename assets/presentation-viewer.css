@@ -21,8 +21,25 @@ body.presentation-body{margin:0;background:radial-gradient(ellipse at 50% 30%,#2
 .viewer-button--secondary{background:#29221d}
 .download-link{background:#4d2c24}
 .viewer-hint{text-align:center;color:#d8c5a8;font-size:.95rem;line-height:1.5;margin:15px auto 0}
-.viewer:fullscreen{display:flex;flex-direction:column;justify-content:center;width:100vw;height:100dvh;border:0;border-radius:0;padding:max(10px,env(safe-area-inset-top)) 12px max(10px,env(safe-area-inset-bottom));background:#100e0d}
-.viewer:fullscreen .slide-stage{width:min(100%,calc((100dvh - 140px)*16/9));max-height:calc(100dvh - 140px);margin:auto}
-.viewer:fullscreen .viewer-controls{width:min(100%,900px);margin:0 auto}
 @media(max-width:420px){.presentation-page{padding:14px 8px calc(36px + env(safe-area-inset-bottom))}.viewer{padding:5px}.viewer-controls{gap:5px}.viewer-button{padding:8px 10px}.viewer-button span{display:none}.presentation-header{margin-bottom:15px}.presentation-header p:last-child{font-size:.98rem}}
 @media(orientation:landscape) and (max-height:520px){.presentation-page{padding-top:6px}.presentation-header{margin-bottom:8px}.presentation-header .eyebrow,.presentation-header p:last-child,.viewer-hint{display:none}.presentation-header h1{font-size:1.4rem}.slide-stage{width:min(100%,calc((100dvh - 160px)*16/9));max-height:calc(100dvh - 160px);margin-inline:auto}.viewer-actions{margin-top:5px}}
+
+html.presentation-fullscreen{overflow:hidden;background:#000}
+body.presentation-fullscreen{position:fixed;inset:0;width:100%;overflow:hidden;background:#000}
+body.presentation-fullscreen .site-bar,
+body.presentation-fullscreen .presentation-header,
+body.presentation-fullscreen .viewer-hint{display:none}
+.viewer:is(:fullscreen,.is-presentation-fullscreen){position:fixed;inset:0;z-index:2147483647;width:100vw;height:100vh;height:100dvh;margin:0;padding:0;border:0;border-radius:0;box-shadow:none;background:#000;overflow:hidden}
+.viewer:is(:fullscreen,.is-presentation-fullscreen) .slide-stage{position:absolute;inset:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);width:auto;height:auto;max-height:none;aspect-ratio:auto;margin:0;border-radius:0;background:#000}
+.viewer:is(:fullscreen,.is-presentation-fullscreen) .slide-stage img,
+.viewer:is(:fullscreen,.is-presentation-fullscreen) .slide-stage video{width:100%;height:100%;object-fit:contain}
+.viewer:is(:fullscreen,.is-presentation-fullscreen) .viewer-controls{position:absolute;z-index:2;left:calc(8px + env(safe-area-inset-left));right:calc(8px + env(safe-area-inset-right));bottom:calc(8px + env(safe-area-inset-bottom));display:grid;grid-template-columns:minmax(44px,1fr) auto minmax(44px,1fr);align-items:center;width:auto;margin:0;padding:0;pointer-events:none}
+.viewer:is(:fullscreen,.is-presentation-fullscreen).is-video-slide .viewer-controls{bottom:calc(64px + env(safe-area-inset-bottom))}
+.viewer:is(:fullscreen,.is-presentation-fullscreen) .viewer-controls .viewer-button{min-width:48px;min-height:48px;padding:8px 12px;border-color:rgba(255,255,255,.5);background:rgba(0,0,0,.6);font-size:1.35rem;pointer-events:auto}
+.viewer:is(:fullscreen,.is-presentation-fullscreen) .viewer-controls .viewer-button:first-child{justify-self:start}
+.viewer:is(:fullscreen,.is-presentation-fullscreen) .viewer-controls .viewer-button:last-child{justify-self:end}
+.viewer:is(:fullscreen,.is-presentation-fullscreen) .viewer-controls .viewer-button span{display:none}
+.viewer:is(:fullscreen,.is-presentation-fullscreen) .slide-counter{min-width:0;padding:8px 12px;border-radius:8px;background:rgba(0,0,0,.65);color:#fff;font-size:1rem;line-height:1.2}
+.viewer:is(:fullscreen,.is-presentation-fullscreen) .viewer-actions{position:absolute;z-index:3;top:calc(8px + env(safe-area-inset-top));right:calc(8px + env(safe-area-inset-right));display:block;margin:0}
+.viewer:is(:fullscreen,.is-presentation-fullscreen) #fullscreen{min-width:48px;min-height:48px;padding:0;border-color:rgba(255,255,255,.5);background:rgba(0,0,0,.6);font-size:1.7rem;line-height:1}
+.viewer:is(:fullscreen,.is-presentation-fullscreen) .download-link{display:none}

@@ -11,6 +11,10 @@
   const viewer = document.getElementById("viewer");
   let current = 1;
   let touchStart = null;
+  let presentationFullscreen = false;
+  let nativeFullscreenEntered = false;
+  let scrollBeforeFullscreen = 0;
+  let bodyTopBeforeFullscreen = "";
 
   function slideUrl(number) {
     return "assets/slides/folie-" + String(number).padStart(2, "0") + "-b7eeff66.webp";
@@ -27,6 +31,7 @@
     video.pause();
     current = number;
     const filmSlide = current === 2;
+    viewer.classList.toggle("is-video-slide", filmSlide);
     image.hidden = filmSlide;
     video.hidden = !filmSlide;
     if (filmSlide) {
@@ -47,7 +52,12 @@
   previous.addEventListener("click", () => show(current - 1));
   next.addEventListener("click", () => show(current + 1));
   document.addEventListener("keydown", event => {
-    if (event.target.matches("video, input, textarea, select")) return;
+    if (event.key === "Escape" && presentationFullscreen) {
+      event.preventDefault();
+      leaveFullscreen();
+      return;
+    }
+    if (event.target instanceof Element && event.target.matches("video, input, textarea, select")) return;
     if (event.key === "ArrowLeft") { event.preventDefault(); show(current - 1); }
     if (event.key === "ArrowRight") { event.preventDefault(); show(current + 1); }
   });
@@ -64,16 +74,58 @@
     show(current + (dx < 0 ? 1 : -1));
   }, { passive: true });
 
-  if (viewer.requestFullscreen) {
-    fullscreen.addEventListener("click", () => {
-      if (document.fullscreenElement) document.exitFullscreen();
-      else viewer.requestFullscreen();
-    });
-    document.addEventListener("fullscreenchange", () => {
-      fullscreen.textContent = document.fullscreenElement ? "Vollbild verlassen" : "Vollbild";
-    });
-  } else {
-    fullscreen.hidden = true;
+  function setPresentationFullscreen(active) {
+    if (presentationFullscreen === active) return;
+    presentationFullscreen = active;
+    if (active) {
+      scrollBeforeFullscreen = window.scrollY;
+      bodyTopBeforeFullscreen = document.body.style.top;
+      document.body.style.top = `-${scrollBeforeFullscreen}px`;
+      document.documentElement.classList.add("presentation-fullscreen");
+      document.body.classList.add("presentation-fullscreen");
+      viewer.classList.add("is-presentation-fullscreen");
+    } else {
+      viewer.classList.remove("is-presentation-fullscreen");
+      document.body.classList.remove("presentation-fullscreen");
+      document.documentElement.classList.remove("presentation-fullscreen");
+      document.body.style.top = bodyTopBeforeFullscreen;
+      window.scrollTo(0, scrollBeforeFullscreen);
+    }
+    fullscreen.textContent = active ? "×" : "Vollbild";
+    fullscreen.setAttribute("aria-label", active ? "Vollbild verlassen" : "Vollbild öffnen");
   }
+
+  async function leaveFullscreen() {
+    if (document.fullscreenElement === viewer && document.exitFullscreen) {
+      try { await document.exitFullscreen(); } catch { return; }
+      if (document.fullscreenElement === viewer) return;
+    }
+    nativeFullscreenEntered = false;
+    setPresentationFullscreen(false);
+  }
+
+  fullscreen.addEventListener("click", async () => {
+    if (presentationFullscreen) {
+      await leaveFullscreen();
+      return;
+    }
+
+    // Show the CSS mode immediately; keep it if native fullscreen is unavailable or rejects.
+    setPresentationFullscreen(true);
+    if (typeof viewer.requestFullscreen === "function") {
+      try { await viewer.requestFullscreen({ navigationUI: "hide" }); } catch { /* CSS mode stays active. */ }
+    }
+  });
+
+  document.addEventListener("fullscreenchange", () => {
+    if (document.fullscreenElement === viewer) {
+      nativeFullscreenEntered = true;
+      setPresentationFullscreen(true);
+    } else if (nativeFullscreenEntered) {
+      nativeFullscreenEntered = false;
+      setPresentationFullscreen(false);
+    }
+  });
+
   preload(3);
 })();
